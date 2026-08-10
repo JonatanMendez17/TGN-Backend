@@ -8,6 +8,8 @@ public interface IGruposRepository
 
     Task<int?> ObtenerTggIdPorChatIdAsync(string chatId, CancellationToken ct = default);
 
+    Task ActualizarChatIdAsync(string chatIdViejo, string chatIdNuevo, CancellationToken ct = default);
+
     Task<int> GuardarReceptorAsync(long tgUserId, string nombre, string apellido, CancellationToken ct = default);
 
     Task AsegurarGrupoReceptorAsync(int tggId, int treId, CancellationToken ct = default);

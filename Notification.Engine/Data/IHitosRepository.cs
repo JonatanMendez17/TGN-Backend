@@ -11,6 +11,8 @@ public interface IHitosRepository
 
     Task GuardarEnvioAsync(int hitoId, string messageId, DateOnly fecha, CancellationToken ct = default);
 
+    Task GuardarErrorEnvioAsync(int hitoId, string error, CancellationToken ct = default);
+
     // Reprogramar
     Task<List<HitoParaReprogramar>> ObtenerCandidatosReprogramarAsync(CancellationToken ct = default);
 

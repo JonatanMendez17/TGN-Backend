@@ -67,10 +67,25 @@ public class HitosRepository(ISqlDataAccess db) : IHitosRepository
 
     public Task GuardarEnvioAsync(int hitoId, string messageId, DateOnly fecha, CancellationToken ct = default) =>
         _db.EjecutarAsync(
-            "UPDATE dbo.Hitos_Mensuales SET msg_id = @MsgId, reprogramar = @Fecha WHERE id = @Id",
+            """
+            UPDATE dbo.Hitos_Mensuales
+            SET msg_id = @MsgId, reprogramar = @Fecha, Envio_Error = NULL, Envio_Error_Fecha = NULL
+            WHERE id = @Id
+            """,
             [
                 new SqlParameter("@MsgId", SqlDbType.NVarChar, 50) { Value = messageId },
                 new SqlParameter("@Fecha", SqlDbType.Date) { Value = fecha.ToDateTime(TimeOnly.MinValue) },
+                new SqlParameter("@Id", SqlDbType.Int) { Value = hitoId }
+            ],
+            ct);
+
+    // Deja registro visible desde la app de por qué no se pudo mandar un hito (ej. chat inválido,
+    // bot expulsado, texto rechazado) — antes solo quedaba en el log del servidor.
+    public Task GuardarErrorEnvioAsync(int hitoId, string error, CancellationToken ct = default) =>
+        _db.EjecutarAsync(
+            "UPDATE dbo.Hitos_Mensuales SET Envio_Error = @Error, Envio_Error_Fecha = GETDATE() WHERE id = @Id",
+            [
+                new SqlParameter("@Error", SqlDbType.NVarChar, 300) { Value = error },
                 new SqlParameter("@Id", SqlDbType.Int) { Value = hitoId }
             ],
             ct);

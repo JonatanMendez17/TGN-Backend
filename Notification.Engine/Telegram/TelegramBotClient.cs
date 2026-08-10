@@ -29,7 +29,13 @@ public class TelegramBotClient(IHttpClientFactory httpClientFactory, TelegramTok
         };
 
         var (exito, body) = await EnviarPeticionAsync("sendMessage", payload, $"chat {chatId}", ct);
-        return new TelegramSendResult { Success = exito, MessageId = body?.Result?.MessageId };
+        return new TelegramSendResult
+        {
+            Success = exito,
+            MessageId = body?.Result?.MessageId,
+            MigrateToChatId = body?.Parameters?.MigrateToChatId,
+            ErrorDescription = exito ? null : body?.Description
+        };
     }
 
     // Actualiza mensajes enviados; si no pueden editarse, continúa sin interrumpir el proceso.

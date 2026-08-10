@@ -10,6 +10,8 @@ public sealed class TelegramSendResult
 {
     public bool Success { get; init; }
     public long? MessageId { get; init; }
+    public long? MigrateToChatId { get; init; }
+    public string? ErrorDescription { get; init; }
 }
 
 internal sealed class TelegramApiResponse
@@ -34,6 +36,11 @@ internal sealed class TelegramResponseParameters
 {
     [JsonPropertyName("retry_after")]
     public int? RetryAfter { get; set; }
+
+    // Presente cuando un grupo básico se convirtió en supergrupo: Telegram invalida el chat_id
+    // viejo para siempre y devuelve acá el nuevo.
+    [JsonPropertyName("migrate_to_chat_id")]
+    public long? MigrateToChatId { get; set; }
 }
 
 internal sealed class TelegramApiMessage

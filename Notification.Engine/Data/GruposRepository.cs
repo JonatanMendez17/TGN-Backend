@@ -38,6 +38,15 @@ public class GruposRepository(ISqlDataAccess db) : IGruposRepository
             [new SqlParameter("@ChatId", SqlDbType.VarChar, 50) { Value = chatId }],
             ct);
 
+    public Task ActualizarChatIdAsync(string chatIdViejo, string chatIdNuevo, CancellationToken ct = default) =>
+        _db.EjecutarAsync(
+            "UPDATE dbo.Tg_Grupo SET Tgg_Chat_Id = @Nuevo WHERE Tgg_Chat_Id = @Viejo",
+            [
+                new SqlParameter("@Nuevo", SqlDbType.VarChar, 50) { Value = chatIdNuevo },
+                new SqlParameter("@Viejo", SqlDbType.VarChar, 50) { Value = chatIdViejo }
+            ],
+            ct);
+
     public async Task<int> GuardarReceptorAsync(long tgUserId, string nombre, string apellido, CancellationToken ct = default)
     {
         var existenteId = await _db.ObtenerValorAsync<int?>(
