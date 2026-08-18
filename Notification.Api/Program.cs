@@ -34,7 +34,6 @@ builder.Services.AddAuthentication(AuthOptions.SchemeName).AddScheme<AuthOptions
 builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
-builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
@@ -42,7 +41,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers().RequireAuthorization();
-app.MapHealthChecks("/health"); // sin auth: lo consume infra/monitoreo, no un cliente de negocio
 
 try
 {
