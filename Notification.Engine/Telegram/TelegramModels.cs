@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Notification.Engine.Telegram;
@@ -19,8 +20,11 @@ internal sealed class TelegramApiResponse
     [JsonPropertyName("ok")]
     public bool Ok { get; set; }
 
+    // Tipado como JsonElement a propósito: según el método, Telegram devuelve acá un objeto
+    // (sendMessage/editMessageText → mensaje) o un booleano (answerCallbackQuery → true).
+    // Deserializar directo a un tipo fijo revienta con JsonException en el segundo caso.
     [JsonPropertyName("result")]
-    public TelegramApiMessage? Result { get; set; }
+    public JsonElement Result { get; set; }
 
     [JsonPropertyName("description")]
     public string? Description { get; set; }
@@ -30,6 +34,11 @@ internal sealed class TelegramApiResponse
 
     [JsonPropertyName("parameters")]
     public TelegramResponseParameters? Parameters { get; set; }
+
+    public long? ResultMessageId =>
+        Result.ValueKind == JsonValueKind.Object && Result.TryGetProperty("message_id", out var messageId)
+            ? messageId.GetInt64()
+            : null;
 }
 
 internal sealed class TelegramResponseParameters
@@ -41,10 +50,4 @@ internal sealed class TelegramResponseParameters
     // viejo para siempre y devuelve acá el nuevo.
     [JsonPropertyName("migrate_to_chat_id")]
     public long? MigrateToChatId { get; set; }
-}
-
-internal sealed class TelegramApiMessage
-{
-    [JsonPropertyName("message_id")]
-    public long MessageId { get; set; }
 }

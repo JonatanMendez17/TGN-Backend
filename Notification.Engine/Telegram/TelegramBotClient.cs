@@ -32,7 +32,7 @@ public class TelegramBotClient(IHttpClientFactory httpClientFactory, TelegramTok
         return new TelegramSendResult
         {
             Success = exito,
-            MessageId = body?.Result?.MessageId,
+            MessageId = body?.ResultMessageId,
             MigrateToChatId = body?.Parameters?.MigrateToChatId,
             ErrorDescription = exito ? null : body?.Description
         };

@@ -66,6 +66,14 @@ public class EnvioDiarioJob(IServiceScopeFactory scopeFactory, ILogger<EnvioDiar
 
             foreach (var hito in hitosDelChat)
             {
+                // Si ya había un mensaje previo sin resolver (ej. ReprogramarJob no llegó a cerrarlo
+                // ese día), lo cerramos antes de mandar el nuevo — si no, quedan dos mensajes con
+                // botones activos para el mismo hito y cualquiera de los dos puede responderse.
+                if (hito.MsgId is not null)
+                {
+                    await telegram.EditarMensajeAsync(chatIdActual, hito.MsgId, $"⏰ {hito.HitoTexto}", ct);
+                }
+
                 List<IReadOnlyList<InlineKeyboardButton>> teclado =
                 [
                     [
