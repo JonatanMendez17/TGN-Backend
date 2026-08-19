@@ -30,10 +30,10 @@ public class MensajeriaService(IEnumerable<INotificationProvider> providers, ILo
     }
 
     private static string ConstruirTexto(EnviarMensajeRequest r) =>
-        $"De: {r.De}\n" +
-        $"Para: {r.Para}\n" +
-        $"{r.Titulo}\n\n" +
-        $"{r.Mensaje}";
+        $"👤 De: {r.De}\n" +
+        $"👥 Para: {r.Para}\n" +
+        $"🏷️ {r.Titulo}\n\n" +
+        $"📝 {r.Mensaje}";
 
     private static EnviarMensajeResponse Respuesta(bool exitoso, string mensaje, string canal) => new() { 
         Exitoso = exitoso, 

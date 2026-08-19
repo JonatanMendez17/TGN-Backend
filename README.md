@@ -114,11 +114,11 @@ Authorization: Bearer tu-token-seguro
 **El mensaje llega a Telegram con este formato:**
 
 ```
-De: Remitente
-Para: Destinatario
-Asunto del mensaje
+👤 De: Remitente
+👥 Para: Destinatario
+🏷️ Asunto del mensaje
 
-Cuerpo del mensaje
+📝 Cuerpo del mensaje
 ```
 
 **Respuestas:**
