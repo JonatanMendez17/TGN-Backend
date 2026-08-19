@@ -48,7 +48,7 @@ Antes de correr cualquier script SQL o migración, **verificar la connection str
 | `TGN-master` (Web) | `172.18.131.46` | `TGN` | `Web/Global.asax` |
 | `TGN-dev` (Web) + `Notification.Engine` en dev | `CUAD-4041` | `TGN-DEV` | `Web/Global.asax` de TGN-dev / `appsettings.Development.json` |
 
-User: `sa` / Password: `Admin_jm` en ambas.
+User: `sa` / Password: <ver credenciales internas> en ambas.
 
 **Por qué importa:** ya pasó que se corrió una migración contra `172.18.131.46/TGN` (la de red, la "obvia") cuando el código que realmente se estaba probando usaba `CUAD-4041/TGN-DEV` — rompió `hitos.aspx` con "nombre de columna no válido" hasta que se corrió también ahí. Cualquier cambio de schema que afecte a TGN se prueba en `CUAD-4041/TGN-DEV`; recién se replica a `172.18.131.46/TGN` cuando el código llega a `master`.
 
